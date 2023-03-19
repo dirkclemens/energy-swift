@@ -16,12 +16,16 @@ Install using Carthage (https://github.com/Carthage/Carthage) by adding the foll
 ```
 github "emqx/CocoaMQTT" "master"
 github "SwiftyJSON/SwiftyJSON" ~> 4.0
+```
 
 Then, run the following command:
 
-`carthage update --platform macOS --use-xcframeworks` or
+`carthage update --platform macOS --use-xcframeworks` or   
 `carthage update --use-xcframeworks`
+
 
 ## Integration of the libraries
 
 On your application targets “General” settings tab, in the "Frameworks, Libraries, and Embedded content" section, drag and drop LibraryName.xcframework, from the Carthage/Build folder on disk. Then select "Embed & Sign". 
+
+![framworks-512x172](https://user-images.githubusercontent.com/908446/226188479-2cbd7b41-9de9-42d0-8e1e-dbe340ebbebb.png)
