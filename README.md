@@ -1,5 +1,4 @@
 # energy-swift
-macOS Swift App (MQTT) Energiebilanz 
 
 macOS Swift App using MQTT to show data from some of my energy sources (first approach)
 
