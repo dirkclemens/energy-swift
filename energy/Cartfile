@@ -1,0 +1,2 @@
+github "emqx/CocoaMQTT" "master"
+github "SwiftyJSON/SwiftyJSON" ~> 4.0

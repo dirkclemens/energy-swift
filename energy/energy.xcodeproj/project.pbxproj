@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		434D30C629C3663100F3D2CA /* SwiftyJSON.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434D30C529C3663100F3D2CA /* SwiftyJSON.xcframework */; };
+		434D30C729C3663100F3D2CA /* SwiftyJSON.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 434D30C529C3663100F3D2CA /* SwiftyJSON.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43D6EE1C29BE1CB700CFE7AB /* energyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6EE1B29BE1CB700CFE7AB /* energyApp.swift */; };
+		43D6EE1E29BE1CB700CFE7AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D6EE1D29BE1CB700CFE7AB /* ContentView.swift */; };
+		43D6EE2029BE1CB700CFE7AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D6EE1F29BE1CB700CFE7AB /* Assets.xcassets */; };
+		43D6EE2329BE1CB700CFE7AB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43D6EE2229BE1CB700CFE7AB /* Preview Assets.xcassets */; };
+		43D6EE2E29BE2DED00CFE7AB /* CocoaMQTT.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6EE2B29BE2DED00CFE7AB /* CocoaMQTT.xcframework */; };
+		43D6EE2F29BE2DED00CFE7AB /* CocoaMQTT.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6EE2B29BE2DED00CFE7AB /* CocoaMQTT.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43D6EE3029BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6EE2C29BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework */; };
+		43D6EE3129BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6EE2C29BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43D6EE3229BE2DED00CFE7AB /* Starscream.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6EE2D29BE2DED00CFE7AB /* Starscream.xcframework */; };
+		43D6EE3329BE2DED00CFE7AB /* Starscream.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D6EE2D29BE2DED00CFE7AB /* Starscream.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		43D6EE3429BE2DED00CFE7AB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				43D6EE3129BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework in Embed Frameworks */,
+				434D30C729C3663100F3D2CA /* SwiftyJSON.xcframework in Embed Frameworks */,
+				43D6EE3329BE2DED00CFE7AB /* Starscream.xcframework in Embed Frameworks */,
+				43D6EE2F29BE2DED00CFE7AB /* CocoaMQTT.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		434D30C529C3663100F3D2CA /* SwiftyJSON.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = SwiftyJSON.xcframework; path = Carthage/Build/SwiftyJSON.xcframework; sourceTree = "<group>"; };
+		43D6EE1829BE1CB700CFE7AB /* energy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = energy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D6EE1B29BE1CB700CFE7AB /* energyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = energyApp.swift; sourceTree = "<group>"; };
+		43D6EE1D29BE1CB700CFE7AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		43D6EE1F29BE1CB700CFE7AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = energy/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		43D6EE2229BE1CB700CFE7AB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		43D6EE2429BE1CB700CFE7AB /* energy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = energy.entitlements; sourceTree = "<group>"; };
+		43D6EE2B29BE2DED00CFE7AB /* CocoaMQTT.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CocoaMQTT.xcframework; path = Carthage/Build/CocoaMQTT.xcframework; sourceTree = "<group>"; };
+		43D6EE2C29BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MqttCocoaAsyncSocket.xcframework; path = Carthage/Build/MqttCocoaAsyncSocket.xcframework; sourceTree = "<group>"; };
+		43D6EE2D29BE2DED00CFE7AB /* Starscream.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Starscream.xcframework; path = Carthage/Build/Starscream.xcframework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		43D6EE1529BE1CB700CFE7AB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43D6EE3029BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework in Frameworks */,
+				434D30C629C3663100F3D2CA /* SwiftyJSON.xcframework in Frameworks */,
+				43D6EE3229BE2DED00CFE7AB /* Starscream.xcframework in Frameworks */,
+				43D6EE2E29BE2DED00CFE7AB /* CocoaMQTT.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		43D6EE0F29BE1CB700CFE7AB = {
+			isa = PBXGroup;
+			children = (
+				43D6EE1A29BE1CB700CFE7AB /* energy */,
+				43D6EE1929BE1CB700CFE7AB /* Products */,
+				43D6EE2A29BE2DED00CFE7AB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		43D6EE1929BE1CB700CFE7AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43D6EE1829BE1CB700CFE7AB /* energy.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		43D6EE1A29BE1CB700CFE7AB /* energy */ = {
+			isa = PBXGroup;
+			children = (
+				43D6EE1B29BE1CB700CFE7AB /* energyApp.swift */,
+				43D6EE1D29BE1CB700CFE7AB /* ContentView.swift */,
+				43D6EE1F29BE1CB700CFE7AB /* Assets.xcassets */,
+				43D6EE2429BE1CB700CFE7AB /* energy.entitlements */,
+				43D6EE2129BE1CB700CFE7AB /* Preview Content */,
+			);
+			path = energy;
+			sourceTree = "<group>";
+		};
+		43D6EE2129BE1CB700CFE7AB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				43D6EE2229BE1CB700CFE7AB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		43D6EE2A29BE2DED00CFE7AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				434D30C529C3663100F3D2CA /* SwiftyJSON.xcframework */,
+				43D6EE2B29BE2DED00CFE7AB /* CocoaMQTT.xcframework */,
+				43D6EE2C29BE2DED00CFE7AB /* MqttCocoaAsyncSocket.xcframework */,
+				43D6EE2D29BE2DED00CFE7AB /* Starscream.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		43D6EE1729BE1CB700CFE7AB /* energy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 43D6EE2729BE1CB700CFE7AB /* Build configuration list for PBXNativeTarget "energy" */;
+			buildPhases = (
+				43D6EE1429BE1CB700CFE7AB /* Sources */,
+				43D6EE1529BE1CB700CFE7AB /* Frameworks */,
+				43D6EE1629BE1CB700CFE7AB /* Resources */,
+				43D6EE3429BE2DED00CFE7AB /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = energy;
+			productName = energy;
+			productReference = 43D6EE1829BE1CB700CFE7AB /* energy.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		43D6EE1029BE1CB700CFE7AB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					43D6EE1729BE1CB700CFE7AB = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 43D6EE1329BE1CB700CFE7AB /* Build configuration list for PBXProject "energy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 43D6EE0F29BE1CB700CFE7AB;
+			productRefGroup = 43D6EE1929BE1CB700CFE7AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				43D6EE1729BE1CB700CFE7AB /* energy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		43D6EE1629BE1CB700CFE7AB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43D6EE2329BE1CB700CFE7AB /* Preview Assets.xcassets in Resources */,
+				43D6EE2029BE1CB700CFE7AB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		43D6EE1429BE1CB700CFE7AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43D6EE1E29BE1CB700CFE7AB /* ContentView.swift in Sources */,
+				43D6EE1C29BE1CB700CFE7AB /* energyApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		43D6EE2529BE1CB700CFE7AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		43D6EE2629BE1CB700CFE7AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		43D6EE2829BE1CB700CFE7AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = energy/energy.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"energy/Preview Content\"";
+				DEVELOPMENT_TEAM = BXZ479CGUZ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Energiebilanz;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.adcore.energy;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		43D6EE2929BE1CB700CFE7AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = energy/energy.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"energy/Preview Content\"";
+				DEVELOPMENT_TEAM = BXZ479CGUZ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Energiebilanz;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.adcore.energy;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		43D6EE1329BE1CB700CFE7AB /* Build configuration list for PBXProject "energy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43D6EE2529BE1CB700CFE7AB /* Debug */,
+				43D6EE2629BE1CB700CFE7AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		43D6EE2729BE1CB700CFE7AB /* Build configuration list for PBXNativeTarget "energy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43D6EE2829BE1CB700CFE7AB /* Debug */,
+				43D6EE2929BE1CB700CFE7AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 43D6EE1029BE1CB700CFE7AB /* Project object */;
+}
