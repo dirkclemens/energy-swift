@@ -7,7 +7,7 @@ Data sources:
 * go-eCharger Homefix
 * OBIS / SML reader (esp8266 based)
 
-<img width="512" alt="screenshot" src="https://user-images.githubusercontent.com/908446/226187039-3ccbb406-1f1e-4c78-bdd4-ff189f04bb8b.png">
+<img width="512" alt="screenshot" src="https://user-images.githubusercontent.com/908446/226980429-49b28783-c321-4a7b-ae6c-b5dcc7ef2359.png">
 
 ## Building using xcode 14
 
