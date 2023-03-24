@@ -20,7 +20,7 @@ github "SwiftyJSON/SwiftyJSON" ~> 4.0
 
 Then, run the following command:
 
-`carthage update --platform macOS --use-xcframeworks` or   
+`carthage update --platform macOS,iOS --use-xcframeworks` or   
 `carthage update --use-xcframeworks`
 
 
