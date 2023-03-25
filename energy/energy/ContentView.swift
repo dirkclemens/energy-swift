@@ -1,9 +1,11 @@
 //
 //  ContentView.swift
-//  energy
+//  Energiebilanz
 //
-//  Created by Dirk Clemens on 12.03.23.
+//  Created by Dirk Clemens on 24.03.23.
 //
+//  icon made with: https://www.appicon.co/#app-icon
+
 
 import Foundation
 import SwiftUI
@@ -41,14 +43,33 @@ struct ContentView: View {
     struct EnergyBalance{
         var id: String { source }
         var source: String
-        var val: Int
+        var value: Int
     }
-    @State var data0: [EnergyBalance] = [
-        .init(source: "Netzbezug", val: 0),
-        .init(source: "Erzeugung", val: 0),
-        .init(source: "Einspeisung", val: 0),
-        .init(source: "Verbrauch", val: 0)
+    @State var barMarkData: [EnergyBalance] = [
+        .init(source: "Netzbezug", value: 0),
+        .init(source: "Erzeugung", value: 0),
+        .init(source: "Einspeisung", value: 0),
+        .init(source: "Verbrauch", value: 0)
     ]
+    
+    struct MqttData {
+        var source: String
+        let date: Date
+        let value: Double
+     
+        init(source: String, value: Double) {
+            self.source = source
+            self.date = Date.now
+            self.value = value
+        }
+    }
+    @State var lineMarkData: [MqttData] = [
+        .init(source: "Netzbezug", value: 0.0),
+        .init(source: "Erzeugung", value: 0.0),
+        .init(source: "Einspeisung", value: 0.0),
+        .init(source: "Verbrauch", value: 0.0)
+    ]
+    let dataPoints = 149
 
     let steelBlue = Color(red: 0.20, green: 0.47, blue: 0.97)
     let lemonYellow = Color(hue: 0.1639, saturation: 1, brightness: 1)
@@ -66,8 +87,9 @@ struct ContentView: View {
     @State var mqttOutputPowerLabel = "0 W"         //energy/growatt/modbusdata/outputpower --> Erzeugung
     @State var mqttEnergyTodayLabel = "0.0 kW"      //energy/growatt/modbusdata/energytoday --> Erzeugung heute
     @State var mqttEnergyTotalLabel = "0.0 kW"      //energy/growatt/modbusdata/energytotal --> Erzeugung gesamt
-    @State var mqttSMLLabel = "- kWh\n- kWh\n- Wh"  //smarthome/tele/tasmota7163/SENSOR     --> SML
-                                                    
+    @State var mqttSMLLabel = "- kWh\n- kWh"        //smarthome/tele/tasmota7163/SENSOR     --> SML
+    @State var mqttSMLLabel167 = "- Wh"             //smarthome/tele/tasmota7163/SENSOR     --> SML
+
                                                     //evcc/loadpoints/1/charging
     @State var mqttVehicleRange = "km"              //evcc/loadpoints/1/vehicleRange        --> Reichweite
     @State var mqttVehicleSoc = " "                 //evcc/loadpoints/1/vehicleSoc          --> Ladung %
@@ -88,7 +110,7 @@ struct ContentView: View {
     @State var isCharging = false // toggle visibility of "Auto"
     @State var isConnected: Bool = false // initially not connected
     @State var doConnect: Bool = true
-
+    
     var body: some View {
 
         VStack(alignment: .leading) {
@@ -98,7 +120,47 @@ struct ContentView: View {
                 Text("aktuell")
                     .foregroundColor(.secondary)
             }
+
+            Chart(lineMarkData, id: \.source) { element in
+                
+                LineMark(
+                    x: .value("Zeit", element.date),
+                    y: .value("Wert", element.value)
+                )
+                .foregroundStyle(by: .value("Quelle", element.source))
+//                .symbol {
+//                    Circle().fill(by: .yellow).frame(width: 4)
+//                }
+                
+                PointMark( // with PointMarks, the annotation will attach to the individual point
+                    x: .value("Zeit", element.date),
+                    y: .value("Wert", element.value)
+                )
+                .interpolationMethod(.catmullRom)
+//                .symbolSize(0) // hide the existing symbol
+                .symbolSize(10)
+//                .symbol(by: .value("Quelle", element.source))
+                .foregroundStyle(by: .value("Quelle", element.source))
+//                .position(by: .value("Quelle", element.source))
+                
+//                .annotation(position: .top, alignment: .trailing, spacing: 26) {
+//                    Text(String(format: "%.1f W", element.value))
+//                        .font(.caption)
+//                }
+            }
+            .chartLegend(position: .bottom, alignment: .center)
+            .chartLegend(.hidden)
+            .chartYAxisLabel("W")
+            .chartForegroundStyleScale([
+                "Netzbezug" : steelBlue,
+                "Erzeugung": .orange,
+                "Einspeisung": lemonYellow,
+                "Verbrauch" : evccGreen]
+            )
+            .frame(height: 100)
+
             Divider().frame(height: 2)
+
             HStack {
                 Text("IN")
                     .foregroundColor(.secondary).bold()
@@ -106,13 +168,13 @@ struct ContentView: View {
                 Text("OUT")
                     .foregroundColor(.secondary).bold()
             }
-            Chart(data0, id: \.source) { element in
+            Chart(barMarkData, id: \.source) { element in
                 BarMark(
-                    x: .value("Energiebilanz", element.val)
+                    x: .value("Energiebilanz", element.value)
                 )
-                .foregroundStyle(by: .value("Watt", element.source))
+                .foregroundStyle(by: .value("Quelle", element.source))
                 .annotation(position: .overlay, alignment: .center) {
-                    Text("\(element.val) W").font(.caption)
+                    Text("\(element.value) W").font(.caption)
                 }
                 .foregroundStyle(Color.clear)
                 .cornerRadius(5)
@@ -135,20 +197,61 @@ struct ContentView: View {
 //            .chartYAxis(.hidden)
             .frame(height: 60)
         } // VStack
+        //------------------------------------------------------------------------
+        .task { // https://stackoverflow.com/a/66802353/10590793
+            debug(text: "task(id:priority:_:) has been called ...")
+            self.mqtt.didConnectAck = { mqtt, ack in
+                debug(text: "task(id:priority:_:) didConnectAck ...")
+                mqttSettings()
+            }
+            self.mqtt.didReceiveMessage = { mqtt, message, id in
+                debug(text: "task(id:priority:_:) didReceiveMessage ...")
+                processMessages(message: message)
+            }
+        }
+        //------------------------------------------------------------------------
+        .onReceive(timer) { _ in // https://github.com/emqx/CocoaMQTT/issues/444#issuecomment-1072787295
+//            debug(text: "onReceive(timer) has been called ...")
+            self.mqtt.didConnectAck = { mqtt, ack in
+//                debug(text: "onReceive() didConnectAck ...")
+                mqttSettings()
+            }
+            self.mqtt.didReceiveMessage = { mqtt, message, id in
+//                debug(text: "onReceive() didReceiveMessage ...")
+                processMessages(message: message)
+            }
+//            self.mqtt.didConnectAck = { mqtt, ack in
+//                mqttSettings()
+//                self.mqtt.didReceiveMessage = { mqtt, message, id in
+//                    processMessages(message: message)
+//                }
+//            }
+        }
+        //------------------------------------------------------------------------
         .onLoad {
-            print("View().onLoad")
+            debug(text: "View().onLoad")
             mqttSettings()
         }
+        //------------------------------------------------------------------------
         .onAppear {
-            print("View().onAppear -> isConnected: \(isConnected)")
-//            isConnected = self.mqtt.connect()
+            debug(text: "View().onAppear -> isConnected: \(isConnected)")
+//            if (isConnected == true){
+//                self.mqtt.disconnect()
+//            } else {
+//                _ = mqttDoConnect(doConnect: true)
+//            }
         }
+        //------------------------------------------------------------------------
         .onDisappear {
-            print("View().onDisappear")
+            debug(text: "View().onDisappear")
             self.mqtt.disconnect()
         }
+        //------------------------------------------------------------------------
         .padding()
-        .frame(minWidth: 350, minHeight: 140)
+        .frame(minHeight: 240)
+//        .frame(minWidth: 350, minHeight: 240)
+//        .frame(maxWidth: 360)
+
 
         VStack (spacing: 0) {
             Group {
@@ -214,7 +317,7 @@ struct ContentView: View {
                         Spacer()
                         Text(mqttEnergyTodayLabel)
                         Spacer().frame(width: 10)
-                        Text(mqttEnergyTotalLabel)
+                        Text(mqttEnergyTotalLabel) // + 27459
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 } // Section
@@ -227,10 +330,20 @@ struct ContentView: View {
                 HStack(alignment: .top, spacing: 0) {
                     Section(header: Text("SML").bold()){
                         HStack(alignment: .bottom, spacing: 0) {
+#if os(macOS)
                             Spacer()
-                            Text(mqttSMLLabel)
+                            Text(mqttSMLLabel + "\n" + mqttSMLLabel167)
                                 .multilineTextAlignment(.trailing)
-                                .frame(minHeight: 60)
+                                .lineLimit(3)
+                            #else
+                            Spacer()
+                            Text(mqttSMLLabel167)
+//                                .multilineTextAlignment(.trailing)
+//                            Spacer()
+//                            Text(mqttSMLLabel)
+//                                .multilineTextAlignment(.trailing)
+//                                .frame(minHeight: 50)
+                            #endif
                         }
 //                        .onHover { _ in
 //                            isCharging = !isCharging
@@ -245,9 +358,15 @@ struct ContentView: View {
                             HStack(alignment: .bottom, spacing: 0) {
                                 Spacer()
                                 VStack(){
+#if os(macOS)
                                     Text(mqttVehicleRange + "\n" + mqttVehicleSoc + " %\n" + mqttVehicleOdometer)
                                         .multilineTextAlignment(.trailing)
-                                        .frame(minHeight: 60)
+                                        .lineLimit(3)
+                                    #else
+                                    Text(mqttVehicleRange + "\n" + mqttVehicleSoc)
+                                        .multilineTextAlignment(.trailing)
+                                        .lineLimit(2)
+                                    #endif
                                 }
 //                                .alert(isPresented: $isCharging){
 //                                    Alert(title: Text(isCharging ? "Auto lädt" : "Auto lädt nicht"))
@@ -261,52 +380,56 @@ struct ContentView: View {
             
             Divider().frame(height: 10)
             
-            ///
-            /// XCode->Targets->Capabilities check [outgoing connections] on
-            /// https://github.com/emqx/CocoaMQTT/issues/444#issuecomment-1072787295
-            ///
             Group {
                 HStack(alignment: .center, spacing: 0) {
 
-                    Text("Mit MQTT Server verbinden")
+#if os(macOS)
+                    Text("Mit MQTT Server verbinden:")
+                    #else
+                    Text("verbinden:")
+                    #endif
                     
                     Spacer()
                     
                     Image(systemName: "sun.max.fill")
                         .foregroundStyle(isConnected ? .orange : .secondary)
-                    
+
                     Spacer()
                     
                     Toggle(isOn: self.$isConnected){
                     }
                     .toggleStyle(SwitchToggleStyle())
                     .onChange(of: isConnected) { value in
-//                        print("in onChange value: \(value)")
+//                        debug(text: "in onChange value: \(value)")
                         _ = mqttDoConnect(doConnect: value)
-                    }
-                    .onReceive(timer) { _ in
-                        self.mqtt.didConnectAck = { mqtt, ack in
-                            mqttSettings()
-                            self.mqtt.didReceiveMessage = { mqtt, message, id in
-                                processMessages(message: message)
-                            }
-                        }
                     }
                 } // HStack
             } // Group
-
         } // VStack
         .padding(10)
+//        .padding(.bottom, 0)
         .overlay(
             RoundedRectangle(cornerRadius: 4)
                 .stroke(.gray, lineWidth: 0.2)
+//                .padding(15)
         )
         .padding(.leading, 15)
         .padding(.trailing, 15)
-        .frame(minWidth: 400, minHeight: 315)
+        .frame(minHeight: 320)
+//        .frame(minWidth: 350, minHeight: 320)
+//        .frame(maxWidth: 350)
 
+#if os(iOS)
+        HStack(alignment: .bottom, spacing: 0) {
+            Text("made with ")
+            Image(systemName: "apple.logo")
+            Text(" by dirk c.")
+        }
+#else
         Spacer()
-    }
+
+#endif
+    } // View
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -319,17 +442,21 @@ struct ContentView_Previews: PreviewProvider {
 /// https://letscode.thomassillmann.de/model-logik-in-swiftui-views/
 extension ContentView {
     
+    func debug(text: String) {
+//        print("[\(Date(), formatter: Formatter.mediumTime)] \(text)")
+    }
+    
     func mqttDoConnect(doConnect: Bool) -> Bool{
-//        print("mqttDoConnect(\(doConnect))")
+//        debug(text: "mqttDoConnect(\(doConnect))")
         if (doConnect == true) {
             isConnected = self.mqtt.connect()
-            print("mqttDoConnect -> isConnected: \(isConnected)")
+            debug(text: "mqttDoConnect -> isConnected: \(isConnected)")
         } else {
             self.mqtt.disconnect()
             isConnected = false
-            print ("mqttDoConnect -> isConnected : \(isConnected)")
+            debug(text: "mqttDoConnect -> isConnected : \(isConnected)")
         }
-        return false
+        return isConnected
     }
     
     func mqttSettings() {
@@ -343,39 +470,61 @@ extension ContentView {
 //        self.mqtt.delegate = self
         self.mqtt.autoReconnect = true
         
-        //self.mqtt.subscribe("#")
-        self.mqtt.subscribe("evcc/site/#")
+//        self.mqtt.subscribe("#")
+//        self.mqtt.subscribe("evcc/site/#")
+        self.mqtt.subscribe("evcc/site/homePower")
+        self.mqtt.subscribe("evcc/site/gridPower")
+        self.mqtt.subscribe("evcc/site/pv/1/power")
         self.mqtt.subscribe("evcc/loadpoints/1/#")
         self.mqtt.subscribe("smarthome/tele/tasmota7163/#")
         self.mqtt.subscribe("energy/growatt/modbusdata/#")
-        print("mqttSettings() done.")
+        debug(text: "mqttSettings() done.")
     }
     
     func processMessages(message: CocoaMQTTMessage) {
         
-//        print("[topic] : \(message.topic)")
+//        debug(text: "[topic] : \(message.topic)")
         
         if (message.topic.contains("evcc/site/homePower")) {
             if (message.string != nil){
                 self.mqttHomePowerLabel = ("\(message.string!) W")
                 self.mqttHomePower = Double(String(message.string!))!
+                
+                // append data for LineMark Chart
+                let cnt = lineMarkData.count
+                if (cnt > dataPoints) {
+                    lineMarkData.removeFirst()
+                }
+                lineMarkData.append(MqttData(source: "Verbrauch", value: self.mqttHomePower))
+                debug(text: "element appended to chartData / Verbrauch: \(self.mqttHomePower), count: \(cnt)")
             }
         }
         
         if (message.topic.contains("evcc/site/gridPower")) {
             if (message.string != nil){
                 self.mqttGridPower = Double(String(message.string!))!
+
+                // append data for LineMark Chart
+                let cnt = lineMarkData.count
+                if (cnt > dataPoints) {
+                    lineMarkData.removeFirst()
+                }
+
                 if self.mqttGridPower < 0 {
                     self.mqttGridInPowerLabel = ("0 W")
                     self.mqttGridInPower = 0.0
                     self.mqttGridOutPowerLabel = ("\(message.string!) W")
                     self.mqttGridOutPower = Double(String(message.string!))!
+                    lineMarkData.append(MqttData(source: "Einspeisung", value: self.mqttGridOutPower))
+                    debug(text: "element appended to chartData / Einspeisung: \(self.mqttGridOutPower)")
                 }
                 else{
                     self.mqttGridInPowerLabel = ("\(message.string!) W")
                     self.mqttGridInPower = Double(String(message.string!))!
                     self.mqttGridOutPowerLabel = ("0 W")
                     self.mqttGridOutPower = 0.0
+                    lineMarkData.append(MqttData(source: "Netzbezug", value: self.mqttGridInPower))
+                    debug(text: "element appended to chartData / Netzbezug: \(self.mqttGridInPower)")
                 }
             }
         }
@@ -390,7 +539,7 @@ extension ContentView {
         if (message.topic.contains("evcc/loadpoints/1/charging")) {
             if (message.string != nil){
                 let payload = message.string?.lowercased()
-//                print("processMessages -> payload: \(String(describing: payload))")
+//                debug(text: "processMessages -> payload: \(String(describing: payload))")
                 if (payload!.contains("true")) {
                     isCharging = true
                 } else {
@@ -422,9 +571,16 @@ extension ContentView {
                 let payload = String(message.string!)
                 if let dataFromString = payload.data(using: .utf8, allowLossyConversion: false) {
                     let json = try? JSON(data: dataFromString)
-                    self.mqttOutputPowerLabel = ("(\(json?["outputpower"].stringValue ?? "") W)")
+                    
+                    let outputpowerString = json?["outputpower"].stringValue
+                    let outputpower = Double(String(outputpowerString!))!
+                    self.mqttOutputPowerLabel = ("\(String(format: "%0.0f", outputpower)) W")
+
                     self.mqttEnergyTodayLabel = ("\(json?["energytoday"].stringValue ?? "") kW")
-                    self.mqttEnergyTotalLabel = ("\(json?["energytotal"].stringValue ?? "") kW")
+                    
+                    let totalString = json?["energytotal"].stringValue
+                    let total = Double(String(totalString!))! + 27459.0
+                    self.mqttEnergyTotalLabel = ("\(String(format: "%0.0f", total)) kW")
                 }
             }
         }
@@ -433,6 +589,15 @@ extension ContentView {
             if (message.string != nil){
                 self.mqttPowerLabel = ("\(message.string!) W")
                 self.mqttPower = Double(String(message.string!))!
+                
+                // append data for LineMark Chart
+                let cnt = lineMarkData.count
+                if (cnt > dataPoints) {
+                    lineMarkData.removeFirst()
+//                    debug(text: "element removed from chartData")
+                }
+                lineMarkData.append(MqttData(source: "Erzeugung", value: self.mqttPower))
+                debug(text: "element appended to chartData / Erzeugung: \(self.mqttPower), count: \(cnt)")
             }
         }
         
@@ -441,14 +606,15 @@ extension ContentView {
                 let payload = String(message.string!)
                 if let dataFromString = payload.data(using: .utf8, allowLossyConversion: false) {
                     let json = try? JSON(data: dataFromString)
-                    let str = ("\(json?["SML"]["Total_in"].stringValue ?? "") kWh \n\(json?["SML"]["Total_out"].stringValue ?? "") kWh \n\(json?["SML"]["Power_curr"].stringValue ?? "") Wh")
+                    let str = ("\(json?["SML"]["Total_in"].stringValue ?? "") kWh \n\(json?["SML"]["Total_out"].stringValue ?? "") kWh")
                     self.mqttSMLLabel = str
+                    self.mqttSMLLabel167 = ("\(json?["SML"]["Power_curr"].stringValue ?? "") Wh")
                 }
             }
         }
         
-        /// renew data for BarMark Chart
-        data0.removeAll()
+        // renew data for BarMark Chart
+        barMarkData.removeAll()
         var netzbezug = 0.0
         var einspeisung = 0.0
         let verbrauch = mqttHomePower
@@ -459,9 +625,42 @@ extension ContentView {
         }
         let erzeugung = mqttPower * (-1.0)
         
-        data0.append(EnergyBalance(source: "Netzbezug", val: Int(netzbezug)))
-        data0.append(EnergyBalance(source: "Erzeugung", val: Int(erzeugung)))
-        data0.append(EnergyBalance(source: "Einspeisung", val: Int(einspeisung)))
-        data0.append(EnergyBalance(source: "Verbrauch", val: Int(verbrauch)))
+        barMarkData.append(EnergyBalance(source: "Netzbezug", value: Int(netzbezug)))
+        barMarkData.append(EnergyBalance(source: "Erzeugung", value: Int(erzeugung)))
+        barMarkData.append(EnergyBalance(source: "Einspeisung", value: Int(einspeisung)))
+        barMarkData.append(EnergyBalance(source: "Verbrauch", value: Int(verbrauch)))
+                
     }
+}
+
+// https://www.ralfebert.de/ios/swift-dateformatter-datumsangaben-formatieren/
+extension DefaultStringInterpolation {
+    mutating func appendInterpolation(_ value: Date, formatter: DateFormatter) {
+        self.appendInterpolation(formatter.string(from: value))
+    }
+}
+struct Formatter {
+
+    /// 12:34
+    static let mediumTime: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        return formatter
+    }()
+
+    /// 12.03.2021
+    static let mediumDate: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }()
+
+    /// 12.03.2021 12:34
+    static let mediumDateAndTime: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
 }
