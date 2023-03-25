@@ -1,13 +1,14 @@
 # energy-swift
 
-macOS Swift (5.x) App using MQTT to show data from some of my energy sources (first approach)
+macOS & iOS Swift (5.x) App using MQTT to show data from some of my energy sources (first approach)
 
 Data sources: 
 * Growatt inverter
 * go-eCharger Homefix
 * OBIS / SML reader (esp8266 based)
 
-<img width="512" alt="screenshot" src="https://user-images.githubusercontent.com/908446/226980429-49b28783-c321-4a7b-ae6c-b5dcc7ef2359.png">
+<img width="453" alt="screenshot" src="https://user-images.githubusercontent.com/908446/227708215-72c07d55-e73d-40a1-a18a-d3179d9b2aeb.png">
+
 
 ## Building using xcode 14
 
